@@ -1,4 +1,4 @@
-# fullstackProject
+# Spring Boot Project
 Hi This is my New SpringBoot Project Welcome.
 
 This is a project based on shopping portal backend part using spring boot.
