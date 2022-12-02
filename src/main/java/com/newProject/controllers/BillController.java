@@ -26,7 +26,6 @@ public class BillController {
 
     @PostMapping("/saveBill/{userId}")
     public ResponseEntity<String> saveBill(@PathVariable Long userId) {
-        System.out.println("Bill Generating Starting");
         String response = billService.calculateBill(userId);
         if(response.equals("Success")){
             response = "Bill Generated Successfully ............";

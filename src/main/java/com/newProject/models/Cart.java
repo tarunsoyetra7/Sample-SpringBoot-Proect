@@ -57,9 +57,4 @@ public class Cart {
 		this.prdQuantity = prdQuantity;
 	}
 
-	@Override
-	public String toString() {
-		return "Cart [cartId=" + cartId + ", userId=" + userId + ", prdId=" + prdId + ", prdQuantity=" + prdQuantity
-				+ "]";
-	}
 }

@@ -44,5 +44,4 @@ public interface OfferRepository extends JpaRepository<Offer , Long> {
 
     @Query(value = SELECT_FROM_OFFER_MASTER_BY_CAT_ID_BETWEEN_CURDATE , nativeQuery = true)
     Optional<Offer> getOfferByCatIdBtwnCurDate(@Param("now") LocalDate now,@Param("catId") Long catId);
-    
 }
