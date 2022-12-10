@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService{
 		Product productDetail = new Product();
 		ResponseContent response = new ResponseContent();
 		try {
-			mapper.map(productDetail, Product.class);
+			productDetail = mapper.map(productDto, Product.class);
 			productRepository.save(productDetail);
 			response.setStatusCode(200);
 			response.setMessage("Data Saved Successfully");
@@ -101,7 +101,7 @@ public class ProductServiceImpl implements ProductService{
 			Optional<Product> optional = productRepository.findById(productDto.getPrdId());
 			if (optional.isPresent()) {
 				Product productDetail = optional.get();
-				mapper.map(productDetail, Product.class);
+				productDetail = mapper.map(productDto, Product.class);
 				productRepository.save(productDetail);
 				response.setStatusCode(200);
 				response.setMessage("Data Updated Successfully");

@@ -3,6 +3,7 @@ package com.newProject.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.newProject.models.User;
@@ -29,4 +30,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 	@Modifying
     @Query(value = DELETE_FROM_USER_MASTER_O_WHERE_O_USER_ID_ID , nativeQuery = true)
     void deleteById(int Id);
+
+	@Query(value = "SELECT u from User u WHERE u.userEmail = :userEmail AND u.userPass = :userPass")
+    User getUserWithCredentials(@Param("userEmail") String userEmail,@Param("userPass") String userPass);
 }

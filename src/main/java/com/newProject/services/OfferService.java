@@ -1,6 +1,7 @@
 package com.newProject.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class OfferService {
     public String saveOfferDetails(long catId,Date offerSDate,Date offerEDate, int offerVal) {
 
         Offer offerdetail = new Offer();
-        offerdetail.setCategory(categoryRepository.findById(catId).get());
+        offerdetail.setCategories(Arrays.asList(categoryRepository.findById(catId).get()));
         offerdetail.setOfferSDate(offerSDate);
         offerdetail.setOfferEDate(offerEDate);
         offerdetail.setOfferVal(offerVal);
@@ -37,15 +38,15 @@ public class OfferService {
             return e.getMessage();
         }
     }
-
+    // Need to review Code
     public List<OfferDto> getAllOffer(){
         List<Offer> offerDetails = offerRepository.getAllOffers();
         List<OfferDto> offerDatas = new ArrayList<>();
         for (Offer offerDetail : offerDetails){
             OfferDto offerData = new OfferDto();
             offerData.setOfferId(offerDetail.getOfferId());
-            offerData.setCatId(categoryRepository.findById(offerDetail.getCategory().getCatId()).get().getCatId());
-            offerData.setCatName(categoryRepository.getCatById(categoryRepository.findById(offerDetail.getCategory().getCatId()).get().getCatId()).get().getCatName());
+           // offerData.setCatId(categoryRepository.findById(offerDetail.getCategory().getCatId()).get().getCatId());
+           // offerData.setCatName(categoryRepository.getCatById(categoryRepository.findById(offerDetail.getCategory().getCatId()).get().getCatId()).get().getCatName());
             offerData.setOfferEDate(offerDetail.getOfferEDate());
             offerData.setOfferSDate(offerDetail.getOfferSDate());
             offerData.setOfferVal(offerDetail.getOfferVal());
@@ -59,7 +60,7 @@ public class OfferService {
         Optional<Offer> optional = offerRepository.findById(Id);
         if(optional.isPresent()){
             Offer offerdetail = optional.get();
-            offerdetail.setCategory(categoryRepository.findById(catId).get());
+            offerdetail.setCategories(Arrays.asList(categoryRepository.findById(catId).get()));
             offerdetail.setOfferSDate(offerSDate);
             offerdetail.setOfferEDate(offerEDate);
             offerdetail.setOfferVal(offerVal);
@@ -88,6 +89,7 @@ public class OfferService {
         
     }
     
+    // Need to review code
     public OfferDto validateAndGetOfferByCatId(Long catId){
         if(categoryRepository.getCatById(catId).isEmpty()){
             return null;
@@ -100,13 +102,14 @@ public class OfferService {
                 offerData = null;
             }
             else{
-                offerDetail = optional.get();
-                offerData.setOfferId(offerDetail.getOfferId());
-                offerData.setCatId(offerDetail.getCategory().getCatId());
-                offerData.setCatName(categoryRepository.getCatById(offerDetail.getCategory().getCatId()).get().getCatName());
-                offerData.setOfferEDate(offerDetail.getOfferEDate());
-                offerData.setOfferSDate(offerDetail.getOfferSDate());
-                offerData.setOfferVal(offerDetail.getOfferVal());
+                // offerDetail = optional.get();
+                // offerData.setOfferId(offerDetail.getOfferId());
+                // offerData.setCatId(Arrays.asList(offerDetail.getCategory().getCatId());
+                // offerData.setCatName(categoryRepository.getCatById(
+                // offerDetail.getCategory().getCatId()).get().getCatName());
+                // offerData.setOfferEDate(offerDetail.getOfferEDate());
+                // offerData.setOfferSDate(offerDetail.getOfferSDate());
+                // offerData.setOfferVal(offerDetail.getOfferVal());
             }   
             return offerData;
         }

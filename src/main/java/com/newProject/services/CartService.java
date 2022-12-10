@@ -1,15 +1,12 @@
 package com.newProject.services;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.newProject.models.Cart;
-import com.newProject.models.Category;
-import com.newProject.models.Product;
-import com.newProject.models.User;
 import com.newProject.repositories.CartRepository;
 import com.newProject.repositories.ProductRepository;
 import com.newProject.repositories.UserRepository;
@@ -28,7 +25,7 @@ public class CartService {
 
 	public String addCart(Long prdId, Long userId, Long prdQuantity) {
 		Cart cart = new Cart();
-		cart.setProduct(productRepository.findById(prdId).get());
+		cart.setProduct(Arrays.asList(productRepository.findById(prdId).get()));
 		cart.setPrdQuantity(prdQuantity);
 		cart.setUser(userRepository.findById(userId).get());
 		
@@ -42,7 +39,7 @@ public class CartService {
 	public String addUpdate(Long cartId,Long prdId, Long userId, Long prdQuantity) {
 		Cart cart = new Cart();
 		cart.setCartId(cartId);
-		cart.setProduct(productRepository.findById(prdId).get());
+		cart.setProduct(Arrays.asList(productRepository.findById(prdId).get()));
 		cart.setPrdQuantity(prdQuantity);
 		cart.setUser(userRepository.findById(userId).get());
 		

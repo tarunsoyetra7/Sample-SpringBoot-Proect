@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -22,6 +23,7 @@ public class Category {
 	@Column(name = "cat_name")
 	private String catName;
 
+	@ManyToOne
 	@JoinColumn(name = "parent_cat_id")
 	private Category category;
 

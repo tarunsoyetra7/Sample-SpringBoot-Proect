@@ -36,42 +36,44 @@ public class BillService {
     @Autowired
     OfferRepository offerRepository;
 
+    // Need to Review
     public String calculateBill(Long userId) {
-        List<Cart> cartdetails = new ArrayList<>();
-        List<Bill> resultList = new ArrayList<>();
-        cartdetails = cartRepository.getCartDetailById(userId);
-        if(cartdetails.size() == 0){
-            return "Fail";
-        }
-        else{
-            for(Cart cartdetail : cartdetails){
-                Bill bill = new Bill();
-                float totalAmt = 0;
-                LocalDate now = LocalDate.now();
-                DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                String text = now.format(formatters);
-                LocalDate parsedDate = LocalDate.parse(text, formatters);
-                Long prdCost = productRepository.findById(cartdetail.getProduct().getPrdId()).get().getPrdRate();
-                Long prdCatId = productRepository.findById(cartdetail.getProduct().getPrdId()).get().getCategory().getCatId();
-                int prdOffer = 0;
-                if(offerRepository.getOfferByCatIdBtwnCurDate(parsedDate,prdCatId).isEmpty()){
-                    prdOffer = 100;
-                }
-                else{
-                    prdOffer = 100 - offerRepository.getOfferByCatIdBtwnCurDate(parsedDate,prdCatId).get().getOfferVal();
-                } 
-                totalAmt = totalAmt + (cartdetail.getPrdQuantity()*prdCost*prdOffer/100);
-                bill.setUserId(userRepository.findById(userId).get());
-                bill.setBillAmt(totalAmt);
-                bill.setProduct(cartdetail.getProduct());
-                bill.setBillProductQuan(cartdetail.getPrdQuantity());
-                bill.setBillDate(java.time.LocalDate.now());
-                bill.setCancelled(false);
-                resultList.add(bill);
-            }
-            billRepository.saveAll(resultList);
-            return "Success";
-        }
+        // List<Cart> cartdetails = new ArrayList<>();
+        // List<Bill> resultList = new ArrayList<>();
+        // cartdetails = cartRepository.getCartDetailById(userId);
+        // if(cartdetails.size() == 0){
+        //     return "Fail";
+        // }
+        // else{
+        //     for(Cart cartdetail : cartdetails){
+        //         Bill bill = new Bill();
+        //         float totalAmt = 0;
+        //         LocalDate now = LocalDate.now();
+        //         DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        //         String text = now.format(formatters);
+        //         LocalDate parsedDate = LocalDate.parse(text, formatters);
+        //         Long prdCost = productRepository.findById(cartdetail.getProduct().getPrdId()).get().getPrdRate();
+        //         Long prdCatId = productRepository.findById(cartdetail.getProduct().getPrdId()).get().getCategory().getCatId();
+        //         int prdOffer = 0;
+        //         if(offerRepository.getOfferByCatIdBtwnCurDate(parsedDate,prdCatId).isEmpty()){
+        //             prdOffer = 100;
+        //         }
+        //         else{
+        //             prdOffer = 100 - offerRepository.getOfferByCatIdBtwnCurDate(parsedDate,prdCatId).get().getOfferVal();
+        //         } 
+        //         totalAmt = totalAmt + (cartdetail.getPrdQuantity()*prdCost*prdOffer/100);
+        //         bill.setUserId(userRepository.findById(userId).get());
+        //         bill.setBillAmt(totalAmt);
+        //         bill.setProduct(cartdetail.getProduct());
+        //         bill.setBillProductQuan(cartdetail.getPrdQuantity());
+        //         bill.setBillDate(java.time.LocalDate.now());
+        //         bill.setCancelled(false);
+        //         resultList.add(bill);
+        //     }
+        //     billRepository.saveAll(resultList);
+        //     return "Success";
+        // }
+        return null;
         
     }
 

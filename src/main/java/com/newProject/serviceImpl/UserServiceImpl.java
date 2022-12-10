@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.newProject.Dto.UserDto;
+import com.newProject.Pojo.ResponseContent;
 import com.newProject.models.User;
 import com.newProject.repositories.UserRepository;
 import com.newProject.services.UserService;
@@ -67,7 +68,8 @@ public class UserServiceImpl  implements UserService{
 	@Override
 	public UserDto fetchEmail(String email){
 		
-		if(email.isBlank() || email.isEmpty()){
+		if(!(email.isBlank() || email.isEmpty())){
+			log.info("Email id is {}", email);
 			User userRecords = userRepository.getUserByEmail(email);
 			UserDto userDetail = mapper.map(userRecords, UserDto.class);
 		
@@ -91,6 +93,26 @@ public class UserServiceImpl  implements UserService{
 		}
 		return "User Id is Null";
 
+	}
+
+	@Override
+	public ResponseContent verifyANdLoginUser(UserDto userDeatil) {
+		ResponseContent response = new ResponseContent();
+		try {
+			User user = userRepository.getUserWithCredentials(userDeatil.getUserEmail() , userDeatil.getUserPass());
+			if(user == null){
+				response.setMessage("Invalid Username or Password");
+				response.setStatusCode(404);
+			} else {
+				response.setMessage("Login Successful");
+				response.setStatusCode(200);
+			}
+		} catch (Exception e) {
+			response.setMessage("Server Error");
+			response.setStatusCode(500);
+			e.printStackTrace();
+		}
+		return response;
 	}
 	
 }
