@@ -23,7 +23,7 @@ public class CategoryController {
 	private CategoryService categoryService;
 
 	@PostMapping("/saveCategory")
-	public ResponseEntity<String> saveCategory(@RequestParam String catName, @RequestParam int parentCatId) {
+	public ResponseEntity<String> saveCategory(@RequestParam String catName, @RequestParam Long parentCatId) {
 		String response = categoryService.saveCategoryDetails(catName, parentCatId);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
@@ -41,7 +41,7 @@ public class CategoryController {
 
 	@PostMapping("/updateCategory")
 	public ResponseEntity<String> updateCategory(@RequestParam long catId, @RequestParam String catName,
-			@RequestParam int parentCatId) {
+			@RequestParam Long parentCatId) {
 		String response = categoryService.updateCategoryDetails(catId, catName, parentCatId);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

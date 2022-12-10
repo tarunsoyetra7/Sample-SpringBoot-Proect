@@ -17,10 +17,10 @@ public class CategoryService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
-	public String saveCategoryDetails(String catName, int parentCatId) {
+	public String saveCategoryDetails(String catName, Long parentCatId) {
 		Category categoryDetail = new Category();
 		categoryDetail.setCatName(catName);
-		categoryDetail.setParentCatId(parentCatId);
+		categoryDetail.setCategory(categoryRepository.findById(parentCatId).get());
 
 		try {
 			categoryRepository.save(categoryDetail);
@@ -35,13 +35,13 @@ public class CategoryService {
 		return categoryDetails;
 	}
 
-	public String updateCategoryDetails(long catId, String catName, int parentCatId) {
+	public String updateCategoryDetails(long catId, String catName, Long parentCatId) {
 		Optional<Category> optional = categoryRepository.findById(catId);
 		if (optional.isPresent()) {
 			Category categoryDetail = optional.get();
 			categoryDetail.setCatId(catId);
 			categoryDetail.setCatName(catName);
-			categoryDetail.setParentCatId(parentCatId);
+			categoryDetail.setCategory(categoryRepository.findById(parentCatId).get());
 			try {
 				categoryRepository.save(categoryDetail);
 				return "Data Updated Successfully ........";

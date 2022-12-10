@@ -26,10 +26,10 @@ public class OfferService {
     public String saveOfferDetails(long catId,Date offerSDate,Date offerEDate, int offerVal) {
 
         Offer offerdetail = new Offer();
-        offerdetail.setCatId(catId);
+        offerdetail.setCategory(categoryRepository.findById(catId).get());
         offerdetail.setOfferSDate(offerSDate);
         offerdetail.setOfferEDate(offerEDate);
-        offerdetail.setofferVal(offerVal);
+        offerdetail.setOfferVal(offerVal);
         try {
             offerRepository.save(offerdetail);
             return "Data Saved Successfully ........";
@@ -44,11 +44,11 @@ public class OfferService {
         for (Offer offerDetail : offerDetails){
             OfferDto offerData = new OfferDto();
             offerData.setOfferId(offerDetail.getOfferId());
-            offerData.setCatId(offerDetail.getCatId());
-            offerData.setCatName(categoryRepository.getCatById(offerDetail.getCatId()).get().getCatName());
+            offerData.setCatId(categoryRepository.findById(offerDetail.getCategory().getCatId()).get().getCatId());
+            offerData.setCatName(categoryRepository.getCatById(categoryRepository.findById(offerDetail.getCategory().getCatId()).get().getCatId()).get().getCatName());
             offerData.setOfferEDate(offerDetail.getOfferEDate());
             offerData.setOfferSDate(offerDetail.getOfferSDate());
-            offerData.setOfferVal(offerDetail.getofferVal());
+            offerData.setOfferVal(offerDetail.getOfferVal());
             offerDatas.add(offerData);
         }
         return offerDatas;
@@ -59,10 +59,10 @@ public class OfferService {
         Optional<Offer> optional = offerRepository.findById(Id);
         if(optional.isPresent()){
             Offer offerdetail = optional.get();
-            offerdetail.setCatId(catId);
+            offerdetail.setCategory(categoryRepository.findById(catId).get());
             offerdetail.setOfferSDate(offerSDate);
             offerdetail.setOfferEDate(offerEDate);
-            offerdetail.setofferVal(offerVal);
+            offerdetail.setOfferVal(offerVal);
             try {
                 offerRepository.save(offerdetail);
                 return "Data Updated Successfully ........";
@@ -102,11 +102,11 @@ public class OfferService {
             else{
                 offerDetail = optional.get();
                 offerData.setOfferId(offerDetail.getOfferId());
-                offerData.setCatId(offerDetail.getCatId());
-                offerData.setCatName(categoryRepository.getCatById(offerDetail.getCatId()).get().getCatName());
+                offerData.setCatId(offerDetail.getCategory().getCatId());
+                offerData.setCatName(categoryRepository.getCatById(offerDetail.getCategory().getCatId()).get().getCatName());
                 offerData.setOfferEDate(offerDetail.getOfferEDate());
                 offerData.setOfferSDate(offerDetail.getOfferSDate());
-                offerData.setOfferVal(offerDetail.getofferVal());
+                offerData.setOfferVal(offerDetail.getOfferVal());
             }   
             return offerData;
         }

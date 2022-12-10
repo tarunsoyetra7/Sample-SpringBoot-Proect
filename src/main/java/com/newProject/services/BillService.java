@@ -40,7 +40,7 @@ public class BillService {
         List<Cart> cartdetails = new ArrayList<>();
         List<Bill> resultList = new ArrayList<>();
         cartdetails = cartRepository.getCartDetailById(userId);
-        if(cartdetails == null){
+        if(cartdetails.size() == 0){
             return "Fail";
         }
         else{
@@ -51,22 +51,22 @@ public class BillService {
                 DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 String text = now.format(formatters);
                 LocalDate parsedDate = LocalDate.parse(text, formatters);
-                Long prdCost = productRepository.findById(cartdetail.getPrdId()).get().getPrdRate();
-                Long prdCatId = productRepository.findById(cartdetail.getPrdId()).get().getPrdCatId();
+                Long prdCost = productRepository.findById(cartdetail.getProduct().getPrdId()).get().getPrdRate();
+                Long prdCatId = productRepository.findById(cartdetail.getProduct().getPrdId()).get().getCategory().getCatId();
                 int prdOffer = 0;
                 if(offerRepository.getOfferByCatIdBtwnCurDate(parsedDate,prdCatId).isEmpty()){
                     prdOffer = 100;
                 }
                 else{
-                    prdOffer = 100 - offerRepository.getOfferByCatIdBtwnCurDate(parsedDate,prdCatId).get().getofferVal();
+                    prdOffer = 100 - offerRepository.getOfferByCatIdBtwnCurDate(parsedDate,prdCatId).get().getOfferVal();
                 } 
                 totalAmt = totalAmt + (cartdetail.getPrdQuantity()*prdCost*prdOffer/100);
-                bill.setUserId(userId);
+                bill.setUserId(userRepository.findById(userId).get());
                 bill.setBillAmt(totalAmt);
-                bill.setBillProductId(cartdetail.getPrdId());
+                bill.setProduct(cartdetail.getProduct());
                 bill.setBillProductQuan(cartdetail.getPrdQuantity());
                 bill.setBillDate(java.time.LocalDate.now());
-                bill.setIsCancelled(false);
+                bill.setCancelled(false);
                 resultList.add(bill);
             }
             billRepository.saveAll(resultList);
@@ -94,7 +94,7 @@ public class BillService {
             else{
                 Bill bill = new Bill();
                 bill = optional.get();
-                bill.setIsCancelled(true);
+                bill.setCancelled(true);
                 billRepository.save(bill);
                 return "Success";
             }
@@ -108,14 +108,14 @@ public class BillService {
         for (Bill billDetail : billDetails){
             BillDto billDto = new BillDto();
             billDto.setBillId(billDetail.getBillId());
-            billDto.setUserId(billDetail.getUserId());
-            billDto.setPrdId(billDetail.getBillProductId());
+            billDto.setUserId(billDetail.getUserId().getId());
+            billDto.setPrdId(billDetail.getProduct().getPrdId());
             billDto.setProductQuan(billDetail.getBillProductQuan());
             billDto.setBillDate(billDetail.getBillDate());
             billDto.setProductAmt(billDetail.getBillAmt());
-            billDto.setProductName(productRepository.check(billDetail.getBillProductId()).get().getPrdName());
-            billDto.setUserName(userRepository.getUserById(billDetail.getUserId()).getUserName());
-            billDto.setIsCancelled(billDetail.isIsCancelled());
+            billDto.setProductName(productRepository.check(billDetail.getProduct().getPrdId()).get().getPrdName());
+            billDto.setUserName(userRepository.getUserById(billDetail.getUserId().getId()).getUserName());
+            billDto.setIsCancelled(billDetail.isCancelled());
             result.add(billDto);
         }
         return result;
